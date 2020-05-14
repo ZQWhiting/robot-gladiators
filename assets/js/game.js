@@ -5,13 +5,13 @@
 // "Lose" - Player robot's health is zero or less
 
 // RNG Function
-var randomNumber = function(min, max) {
+var randomNumber = function (min, max) {
     var value = Math.floor(Math.random() * (max - min + 1) + min);
 
     return value;
 }
 // Set Name Function
-var getPlayerName = function() {
+var getPlayerName = function () {
     var name = "";
     while (name === "" || name === null) {
         name = prompt("What is your robot's name?");
@@ -20,7 +20,7 @@ var getPlayerName = function() {
     return name;
 }
 // Fight or Skip Function
-var fightOrSkip = function() {
+var fightOrSkip = function () {
     // Fight or Skip
     var promptFight = window.prompt("Would you like to FIGHT or SKIP this battle? Enter 'FIGHT' or 'SKIP' to choose.");
     // Conditional recursive function call
@@ -58,12 +58,12 @@ var playerInfo = {
     health: 100,
     attack: 10,
     money: 10,
-    reset: function() {
+    reset: function () {
         this.health = 100;
         this.money = 10;
         this.attack = 10;
     },
-    refillHealth: function() {
+    refillHealth: function () {
         if (this.money >= 7) {
             window.alert("Refilling player's health by 20 for 7 dollars.");
             this.health += 20;
@@ -73,7 +73,7 @@ var playerInfo = {
             window.alert("You don't have enough money!");
         }
     },
-    upgradeAttack: function() {
+    upgradeAttack: function () {
         if (this.money >= 7) {
             window.alert("Upgrading player's attack by 6 for 7 dollars.");
             this.attack += 6;
@@ -129,7 +129,7 @@ var startgame = function () {
 };
 // EndGame
 var endGame = function () {
-// Win or Lose?
+    // Win or Lose?
     // Win + Score
     if (playerInfo.health > 0) {
         window.alert("Great job, you've survived the game! You now have a score of " + playerInfo.money + ".");
@@ -150,50 +150,59 @@ var endGame = function () {
     }
 };
 // Fight
-var fight = function(enemy) {
+var fight = function (enemy) {
+    // Who goes first?
+    var isPlayerTurn = true;
+    if (Math.random() >= 0.5) {
+        isPlayerTurn = false;
+    }
     // loop while both robots are alive
     while (enemy.health > 0 && playerInfo.health > 0) {
-        // fightOrSkip
-        if (fightOrSkip()) {
-            break;
-        }
-        // Fight!
-        // Player attacks Enemy
-        var damage = randomNumber(playerInfo.attack - 3, playerInfo.attack);
-        enemy.health = Math.max(0, enemy.health - damage);
-        console.log(
-            playerInfo.name + " attacked " + enemy.name + ". " + enemy.name + " now has " + enemy.health + " health remaining."
-        );
+        if (isPlayerTurn) {
+            // fightOrSkip
+            if (fightOrSkip()) {
+                break;
+            }
+            // Player attacks Enemy
+            var damage = randomNumber(playerInfo.attack - 3, playerInfo.attack);
+            enemy.health = Math.max(0, enemy.health - damage);
+            console.log(
+                playerInfo.name + " attacked " + enemy.name + ". " + enemy.name + " now has " + enemy.health + " health remaining."
+            );
 
-        // Enemy's health
-        // Dead
-        if (enemy.health <= 0) {
-            window.alert(enemy.name + " has died!");
-            // Award player money for winning
-            playerInfo.money = playerInfo.money + 20;
-            break;
-        }
-        // Alive
-        else {
-            window.alert(enemy.name + " still has " + enemy.health + " health left.");
-        }
-        // Enemy attacks Player
-        var damage = randomNumber(enemy.attack - 3, enemy.attack);
-        playerInfo.health = Math.max(0, playerInfo.health - damage);
-        console.log(
-            enemy.name + " attacked " + playerInfo.name + ". " + playerInfo.name + " now has " + playerInfo.health + " health remaining."
-        );
+            // Enemy's health
+            // Dead
+            if (enemy.health <= 0) {
+                window.alert(enemy.name + " has died!");
+                // Award player money for winning
+                playerInfo.money = playerInfo.money + 20;
+                break;
+            }
+            // Alive
+            else {
+                window.alert(enemy.name + " still has " + enemy.health + " health left.");
+            }
+        } else {
+            // Enemy attacks Player
+            var damage = randomNumber(enemy.attack - 3, enemy.attack);
+            playerInfo.health = Math.max(0, playerInfo.health - damage);
+            console.log(
+                enemy.name + " attacked " + playerInfo.name + ". " + playerInfo.name + " now has " + playerInfo.health + " health remaining."
+            );
 
-        // Player's health
-        // Dead
-        if (playerInfo.health <= 0) {
-            window.alert(playerInfo.name + " has died!");
-            break;
+            // Player's health
+            // Dead
+            if (playerInfo.health <= 0) {
+                window.alert(playerInfo.name + " has died!");
+                break;
+            }
+            // Alive
+            else {
+                window.alert(playerInfo.name + " still has " + playerInfo.health + " health left.");
+            }
         }
-        // Alive
-        else {
-            window.alert(playerInfo.name + " still has " + playerInfo.health + " health left.");
-        }
+        // switch turn order
+        isPlayerTurn = !isPlayerTurn;
     }
 };
 // Shop
