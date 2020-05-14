@@ -4,15 +4,24 @@
 //      * Defeat each enemy robot
 // "Lose" - Player robot's health is zero or less
 
-// RNG
+// RNG Function
 var randomNumber = function(min, max) {
     var value = Math.floor(Math.random() * (max - min + 1) + min);
 
     return value;
 }
-// Player
+// Set Name Function
+var getPlayerName = function() {
+    var name = "";
+    while (name === "" || name === null) {
+        name = prompt("What is your robot's name?");
+    }
+    console.log("Your robot's name is " + name);
+    return name;
+}
+// Player Object
 var playerInfo = {
-    name: window.prompt("What is your robot's name?"),
+    name: getPlayerName(),
     health: 100,
     attack: 10,
     money: 10,
@@ -42,7 +51,7 @@ var playerInfo = {
         }
     }
 };
-// Enemy
+// Enemy Object
 var enemyInfo = [
     {
         name: "Roberto",
@@ -58,7 +67,7 @@ var enemyInfo = [
     }
 ];
 
-//StartGame
+// startGame Function
 var startgame = function () {
     // Player Reset
     playerInfo.reset();
@@ -70,7 +79,6 @@ var startgame = function () {
             // New Enemy & Stats
             var pickedEnemyObj = enemyInfo[i];
             pickedEnemyObj.health = randomNumber(40, 60);
-        //debugger;
             // Fight!
             fight(pickedEnemyObj);
             // Shop!
@@ -86,7 +94,7 @@ var startgame = function () {
     // Play again
     endGame();
 };
-//EndGame
+// EndGame
 var endGame = function () {
 // Win or Lose?
     // Win + Score
